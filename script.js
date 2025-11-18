@@ -243,59 +243,70 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCartBadge();
 
 
-  // ============================================================
-  // ORDER PAGE AUTO-FILL
-  // ============================================================
+// ============================================================
+// 📝 ORDER PAGE — Auto-fill & Dropdown Dinamis
+// ============================================================
 
-  const kategori = document.getElementById("kategori");
-  const produk = document.getElementById("produk");
+const kategori = document.getElementById("kategori");
+const produk = document.getElementById("produk");
 
-  if (kategori && produk) {
-    const buyNow = JSON.parse(localStorage.getItem("buyNow"));
+if (kategori && produk) {
+  // Fungsi untuk isi dropdown produk berdasarkan kategori
+  function renderProductsDropdown(cat) {
+    produk.innerHTML = `<option value="">-- Pilih Produk --</option>`;
+    if (!cat) return;
 
-    function renderProductsDropdown(cat) {
-      produk.innerHTML = `<option value="">-- Pilih Produk --</option>`;
-      if (!cat) return;
-
-      productData[cat].forEach(p => {
-        produk.innerHTML += `<option value="${p.name}">${p.name}</option>`;
-      });
-    }
-
-    if (buyNow && buyNow.isSingle) {
-      const name = buyNow.product.name;
-
-      for (let cat in productData) {
-        if (productData[cat].some(p => p.name === name)) {
-          kategori.value = cat;
-          renderProductsDropdown(cat);
-          produk.value = name;
-          break;
-        }
-      }
-
-      document.querySelector("input[name='jumlah']").value =
-        buyNow.product?.quantity || 1;
-    }
-
-    kategori.addEventListener("change", () => {
-      renderProductsDropdown(kategori.value);
+    productData[cat].forEach(p => {
+      produk.innerHTML += `<option value="${p.name}">${p.name}</option>`;
     });
 
-    const form = document.getElementById("orderForm");
-    if (form) {
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        localStorage.removeItem("buyNow");
-
-        form.reset();
-        produk.innerHTML = `<option value="">-- Pilih Produk --</option>`;
-        produk.disabled = true;
-
-        document.getElementById("statusMessage").style.display = "block";
-      });
-    }
+    // Aktifkan dropdown produk setelah diisi
+    produk.disabled = false;
   }
+
+  // Ambil data buyNow dari localStorage
+  const buyNow = JSON.parse(localStorage.getItem("buyNow"));
+
+  // Jika ada data buyNow, isi form otomatis
+  if (buyNow && buyNow.isSingle) {
+    const name = buyNow.product.name;
+
+    for (let cat in productData) {
+      if (productData[cat].some(p => p.name === name)) {
+        kategori.value = cat;
+        renderProductsDropdown(cat); // Isi produk berdasarkan kategori
+        produk.value = name;         // Pilih produk spesifik
+        break;
+      }
+    }
+
+    // Isi jumlah
+    document.querySelector("input[name='jumlah']").value =
+      buyNow.product?.quantity || 1;
+  }
+
+  // Event: Saat kategori berubah, isi ulang dropdown produk
+  kategori.addEventListener("change", () => {
+    renderProductsDropdown(kategori.value);
+  });
+
+  // Event: Submit form
+  const form = document.getElementById("orderForm");
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      localStorage.removeItem("buyNow"); // Hapus data beli sekarang
+
+      // Reset form
+      form.reset();
+      produk.innerHTML = `<option value="">-- Pilih Produk --</option>`;
+      produk.disabled = true;
+
+      // Tampilkan pesan sukses
+      document.getElementById("statusMessage").style.display = "block";
+    });
+  }
+}
 
 // ============================================================
 // 📌 HAMBURGER MENU (Kini AMAN & Non-bentrok)
