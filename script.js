@@ -297,27 +297,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+// ============================================================
+// 📌 HAMBURGER MENU (Kini AMAN & Non-bentrok)
+// ============================================================
 
-  // ============================================================
-  // 📌 HAMBURGER MENU (Kini AMAN & Non-bentrok)
-  // ============================================================
+const hamburger = document.querySelector(".hamburger"); // ⬅️ Pakai .hamburger (class)
+const navMenu = document.querySelector("nav");         // ⬅️ Pakai nav (tag)
 
-  const hamburger = document.getElementById("hamburger");
-  const navMenu = document.getElementById("nav-menu");
+if (hamburger && navMenu) {
+  hamburger.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+    hamburger.classList.toggle("active");
+  });
 
-  if (hamburger && navMenu) {
-    hamburger.addEventListener("click", () => {
-      navMenu.classList.toggle("active");
-      hamburger.classList.toggle("active");
+  const navLinks = navMenu.querySelectorAll("a");
+  navLinks.forEach(link => {
+    link.addEventListener("click", () => {
+      navMenu.classList.remove("active");
+      hamburger.classList.remove("active");
     });
-
-    const navLinks = navMenu.querySelectorAll("a");
-    navLinks.forEach(link => {
-      link.addEventListener("click", () => {
-        navMenu.classList.remove("active");
-        hamburger.classList.remove("active");
-      });
-    });
-  }
-
-});
+  });
+}
+})
