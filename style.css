@@ -561,7 +561,9 @@ ul {
   margin: 0 auto;
 }
 
-/* 🛍️ Halaman Keranjang cart */
+/* ===============================
+   🛍️ CART PAGE (DESKTOP DEFAULT)
+   =============================== */
 .cart-page {
   padding: 40px 20px;
   max-width: 900px;
@@ -569,7 +571,7 @@ ul {
   text-align: center;
 }
 
-/* 🛍️ Item Keranjang */
+/* ITEM */
 .cart-item {
   display: flex;
   align-items: center;
@@ -581,7 +583,15 @@ ul {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* Info produk agar tidak ketindih tombol */
+/* GAMBAR PRODUK */
+.cart-item img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* INFO */
 .item-info {
   flex: 1;
   text-align: left;
@@ -593,25 +603,51 @@ ul {
   color: #333;
 }
 
-.cart-item img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-right: 15px;
-}
-
 .cart-item p {
   color: #555;
 }
 
+/* BUTTON ACTION */
+.cart-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 120px;
+}
+
+.cart-actions button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.buy-now-cart {
+  background: #28a745;
+  color: white;
+}
+
+.buy-now-cart:hover {
+  background: #1f7c34;
+}
+
+.remove-btn {
+  background: #dc3545;
+  color: white;
+}
+
+.remove-btn:hover {
+  background: #a71d2a;
+}
+
+/* SUMMARY */
 #cart-summary {
   margin-top: 20px;
 }
 
 #cart-summary button {
-  margin: 5px;
-  padding: 10px 20px;
+  margin: 5px 0;
+  padding: 12px 20px;
   border: none;
   background-color: #2196f3;
   color: white;
@@ -623,19 +659,7 @@ ul {
   background-color: #1769aa;
 }
 
-/* 🛒 Ikon Keranjang di Navigasi */
-.cart-icon {
-  position: relative;
-  font-size: 20px;
-  margin-left: 15px;
-  color: white; /* atau warna sesuai tema */
-}
-
-.cart-icon:hover {
-  color: #ffd700; /* efek hover */
-}
-
-/* 🔢 Badge jumlah item */
+/* BADGE KERANJANG */
 .cart-badge {
   position: absolute;
   top: -8px;
@@ -652,22 +676,52 @@ ul {
   justify-content: center;
 }
 
-.cart-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
+/* ============================
+   📱 MOBILE RESPONSIVE FIX
+   ============================ */
+@media (max-width: 480px) {
+
+  /* ITEM MENJADI VERTIKAL */
+  .cart-item {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+
+  /* GAMBAR MEMBESAR AGAR LEBIH ENAK DILIHAT */
+  .cart-item img {
+    width: 130px;
+    height: 130px;
+    margin: 0;
+  }
+
+  /* INFO */
+  .item-info {
+    text-align: center;
+    width: 100%;
+  }
+
+  /* TOMBOL FULL WIDTH */
+  .cart-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .cart-actions button {
+    width: 100%;
+  }
+
+  #cart-summary button {
+    width: 100%;
+  }
+
+  .cart-page {
+    padding: 20px 10px;
+  }
 }
 
-.buy-now-cart {
-  background: #28a745;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 15px;
-  cursor: pointer;
-}
-
-.buy-now-cart:hover {
-  background: #1f7c34;
+.cart-icon {
+  position: relative;
+  display: inline-block;
 }
 
