@@ -12,11 +12,23 @@ body {
    🌄 BACKGROUND KHUSUS UNTUK HALAMAN HOME
    ========================================================= */
 body.home-page {
-  background: 
-    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), /* Efek gelap agar teks tetap terbaca */
-    url('./images/quality_restoration_20251111165416690.jpg') no-repeat center center fixed;
+  background:
+    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+    url('./images/quality_restoration_20251111165416690.jpg') no-repeat center center;
   background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: white;
+}
+
+/* =========================================================
+   AGAR TIDAK ADA SCROLL KE KANAN 
+   ========================================================= */
+html, body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 /* =========================================================
@@ -30,14 +42,13 @@ header {
   justify-content: space-between; /* Logo di kiri, navigasi di kanan */
 }
 
-/* 🔹 Header khusus halaman Home (transparan dan menempel di atas) */
+/* Header khusus halaman Home */
 .home-page header {
-  background: rgba(196, 55, 86, 0.3); /* Warna #c43756 dengan transparansi 80% */
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000; /* Supaya tampil di atas elemen lain */
+  background: rgba(196, 55, 86, 0.35);
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  justify-content: space-between; /* Logo di kiri, navigasi di kanan */
 }
 
 .logo {
@@ -249,55 +260,63 @@ main {
 }
 
 .product-item {
-  background: #f3f3f3;
+  background: #fff;
   color: black;
-  border-radius: 10px;
   padding: 10px;
-  margin: 10px;
+  border-radius: 10px;
   text-align: center;
-  width: 140px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 200px;          /* pastikan fix size */
+  margin: 10px;
+  box-sizing: border-box;
 }
 
 .product-item img {
-  width: 100%;
+  width: 100%;       
+  object-fit: cover;      /* Crop otomatis agar rapi */
   border-radius: 10px;
+  height: 200px;     /* Tinggi dibuat sama */
+  object-fit: cover;
 }
 
+
+/* Wrapper tombol */
 .product-buttons {
   display: flex;
-  justify-content: space-between;
+  gap: 8px;
   margin-top: 10px;
 }
 
+/* Style tombol umum */
 .product-buttons button {
-  flex: 1;
-  margin: 0 3px;
-  padding: 6px;
+  flex: 1;                     /* Bagi ruang sama rata */
+  padding: 8px 10px;
   border: none;
-  border-radius: 8px;
-  font-size: 14px;
   cursor: pointer;
-  transition: 0.3s;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: 0.2s;
+  width: 100%;                 /* Pastikan tidak melewati batas */
+  box-sizing: border-box;
 }
 
 /* Tombol keranjang */
 .cart-btn {
   background-color: #ffea70;
   color: black;
-  font-weight: bold;
 }
 
 /* Tombol beli sekarang */
 .buy-btn {
   background-color: #9e2e47;
   color: white;
-  font-weight: bold;
 }
 
 /* Efek hover */
 .product-buttons button:hover {
-  opacity: 0.8;
-  transform: scale(1.05);
+  opacity: 0.85;
+  transform: scale(1.03);
 }
 
 /* =========================================================
@@ -483,7 +502,7 @@ ul {
   margin: 0 auto;
 }
 
-/* 🛍️ Halaman Keranjang */
+/* 🛍️ Halaman Keranjang cart */
 .cart-page {
   padding: 40px 20px;
   max-width: 900px;
@@ -491,15 +510,28 @@ ul {
   text-align: center;
 }
 
+/* 🛍️ Item Keranjang */
 .cart-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 15px;
   background: #fff;
   margin: 10px 0;
   padding: 15px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Info produk agar tidak ketindih tombol */
+.item-info {
+  flex: 1;
+  text-align: left;
+}
+
+.cart-item h4 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  color: #333;
 }
 
 .cart-item img {
@@ -508,11 +540,6 @@ ul {
   object-fit: cover;
   border-radius: 8px;
   margin-right: 15px;
-}
-
-.cart-item h4 {
-  margin: 0;
-  font-size: 18px;
 }
 
 .cart-item p {
@@ -565,3 +592,23 @@ ul {
   align-items: center;
   justify-content: center;
 }
+
+.cart-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.buy-now-cart {
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+.buy-now-cart:hover {
+  background: #1f7c34;
+}
+
