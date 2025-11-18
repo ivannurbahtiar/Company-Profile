@@ -9,6 +9,27 @@ body {
 }
 
 /* =========================================================
+   🏷️ LOGO + NAMA TOKO
+   ========================================================= */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Jarak antara logo dan teks */
+}
+
+.logo {
+  height: 50px; /* Sesuaikan ukuran logo */
+  width: auto;
+}
+
+.logo-text {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+}
+/* =========================================================
    🌄 BACKGROUND KHUSUS UNTUK HALAMAN HOME
    ========================================================= */
 body.home-page {
@@ -110,13 +131,13 @@ nav a:hover {
 
 /* Efek animasi saat hamburger aktif */
 .hamburger.active span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
+  transform: rotate(39deg) translate(8px, 8px);
 }
 .hamburger.active span:nth-child(2) {
   opacity: 0;
 }
 .hamburger.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
+  transform: rotate(-39deg) translate(8px, -8px);
 }
 
 /* =========================================================
@@ -224,6 +245,51 @@ main {
 .home-text span {
   font-weight: bold;
   color: #fff;
+}
+
+/* =========================================================
+   🎁 ORDER NOW BOX — Di tengah halaman home
+   ========================================================= */
+.order-now-box {
+  text-align: center;
+  padding: 30px 20px;
+  margin: 0px auto;
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.15); /* Transparan lembut */
+  backdrop-filter: blur(8px); /* Efek kaca (jika didukung) */
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.order-now-box p {
+  font-size: 1.3em;
+  color: white;
+  margin: 0 0 20px;
+  font-weight: 500;
+}
+
+.btn-order {
+  display: inline-block;
+  background: #ff5e7d; /* Warna cerah yang menarik */
+  color: white;
+  font-size: 1.1em;
+  font-weight: bold;
+  padding: 12px 32px;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 94, 125, 0.4);
+}
+
+.btn-order:hover {
+  background: #ff3a60;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(255, 94, 125, 0.6);
+}
+
+.btn-order:active {
+  transform: translateY(0);
 }
 
 /* =========================================================
