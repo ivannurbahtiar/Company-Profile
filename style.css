@@ -480,13 +480,6 @@ button:hover {
   background: #7d2438;
 }
 
-#statusMessage {
-  margin-top: 15px;
-  color: white;
-  font-weight: bold;
-  display: none;
-}
-
 /* =========================================================
    👥 DEVELOPER PAGE — Halaman daftar pengembang
    ========================================================= */

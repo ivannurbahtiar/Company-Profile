@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   // ============================================================
-  // 🔥 DATA PRODUK (Dipakai semua halaman)
+  // 🔥 DATA PRODUK
   // ============================================================
 
   const productData = {
@@ -42,101 +42,81 @@ document.addEventListener("DOMContentLoaded", () => {
     ]
   };
 
-
   // ============================================================
   // CART SYSTEM
   // ============================================================
 
-  function getCart() {
-    return JSON.parse(localStorage.getItem("cart")) || [];
-  }
+  const getCart = () => JSON.parse(localStorage.getItem("cart")) || [];
 
-  function saveCart(cart) {
+  const saveCart = (cart) => {
     localStorage.setItem("cart", JSON.stringify(cart));
     updateCartBadge();
-  }
+  };
 
-  function updateCartBadge() {
+  const updateCartBadge = () => {
     const badge = document.getElementById("cart-count");
     if (!badge) return;
 
-    const cart = getCart();
-    const count = cart.reduce((a, b) => a + (b.quantity || 1), 0);
-
+    const count = getCart().reduce((a, b) => a + (b.quantity || 1), 0);
     badge.textContent = count;
     badge.style.display = count > 0 ? "flex" : "none";
-  }
-
+  };
 
   // ============================================================
   // PRODUCT PAGE
   // ============================================================
 
-  const container = document.getElementById("product-container");
+  const productContainer = document.getElementById("product-container");
 
-  if (container) {
-    const categoryButtons = document.querySelectorAll(".prod-btn");
-
-    function renderProducts(cat) {
-      container.innerHTML = "";
-      productData[cat].forEach((p, i) => {
-        container.innerHTML += `
-          <div class="product-item" data-category="${cat}" data-index="${i}">
-            <img src="./images/${p.img}">
-            <h4>${p.name}</h4>
-            <p>${p.price}</p>
-            <div class="product-buttons">
-              <button class="cart-btn">🛒 Keranjang</button>
-              <button class="buy-btn">💳 Beli Sekarang</button>
-            </div>
+  const renderProducts = (cat) => {
+    productContainer.innerHTML = productData[cat]
+      .map((p, i) => `
+        <div class="product-item" data-category="${cat}" data-index="${i}">
+          <img src="./images/${p.img}">
+          <h4>${p.name}</h4>
+          <p>${p.price}</p>
+          <div class="product-buttons">
+            <button class="cart-btn">🛒 Keranjang</button>
+            <button class="buy-btn">💳 Beli Sekarang</button>
           </div>
-        `;
-      });
-    }
+        </div>`)
+      .join("");
+  };
 
+  if (productContainer) {
     renderProducts("atk");
 
-    categoryButtons.forEach(btn => {
+    document.querySelectorAll(".prod-btn").forEach(btn => {
       btn.addEventListener("click", () => {
-        categoryButtons.forEach(x => x.classList.remove("active"));
+        document.querySelectorAll(".prod-btn").forEach(x => x.classList.remove("active"));
         btn.classList.add("active");
         renderProducts(btn.dataset.category);
       });
     });
 
-    // Keranjang & Buy Now
-    container.addEventListener("click", (e) => {
+    productContainer.addEventListener("click", (e) => {
       const card = e.target.closest(".product-item");
       if (!card) return;
 
-      const cat = card.dataset.category;
-      const index = card.dataset.index;
-      const product = { ...productData[cat][index], category: cat };
+      const { category, index } = card.dataset;
+      const product = { ...productData[category][index], category };
 
       if (e.target.classList.contains("cart-btn")) {
-        let cart = getCart();
+        const cart = getCart();
         const exist = cart.find(i => i.name === product.name);
 
-        if (exist) exist.quantity++;
-        else {
-          product.quantity = 1;
-          cart.push(product);
-        }
+        exist ? exist.quantity++ : cart.push({ ...product, quantity: 1 });
 
         saveCart(cart);
-        alert(product.name + " ditambahkan ke keranjang!");
+        alert(`${product.name} ditambahkan ke keranjang!`);
       }
 
       if (e.target.classList.contains("buy-btn")) {
-        localStorage.setItem("buyNow", JSON.stringify({
-          isSingle: true,
-          product: product
-        }));
+        localStorage.setItem("buyNow", JSON.stringify({ isSingle: true, product }));
         window.location.href = "order.html";
       }
     });
   }
-
 
   // ============================================================
   // MODAL IMAGE
@@ -153,14 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => modal.style.display = "none");
-  }
-
-  window.addEventListener("click", (e) => {
-    if (e.target === modal) modal.style.display = "none";
-  });
-
+  closeBtn?.addEventListener("click", () => modal.style.display = "none");
+  window.addEventListener("click", (e) => e.target === modal && (modal.style.display = "none"));
 
   // ============================================================
   // CART PAGE
@@ -169,24 +143,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const cartContainer = document.getElementById("cart-container");
   const totalEl = document.getElementById("cart-total");
 
-  function renderCart() {
+  const renderCart = () => {
     if (!cartContainer) return;
 
     const cart = getCart();
     cartContainer.innerHTML = "";
 
-    if (cart.length === 0) {
+    if (!cart.length) {
       cartContainer.innerHTML = "<p>Keranjang kosong 😢</p>";
-      if (totalEl) totalEl.textContent = "Rp 0";
+      totalEl.textContent = "Rp 0";
       return;
     }
 
     let total = 0;
 
-    cart.forEach((item, index) => {
-      let priceNum = parseInt(item.price.replace(/[^0-9]/g, ""));
-      let qty = item.quantity || 1;
-      total += priceNum * qty;
+    cart.forEach((item, idx) => {
+      const price = parseInt(item.price.replace(/[^0-9]/g, ""));
+      const qty = item.quantity;
+      total += price * qty;
 
       cartContainer.innerHTML += `
         <div class="cart-item">
@@ -196,16 +170,15 @@ document.addEventListener("DOMContentLoaded", () => {
             <p>Harga: ${item.price}</p>
             <p>Jumlah: ${qty}</p>
             <div class="cart-actions">
-              <button class="buy-now-cart" data-index="${index}">Beli Sekarang</button>
-              <button class="remove-btn" data-index="${index}">Hapus</button>
+              <button class="buy-now-cart" data-index="${idx}">Beli Sekarang</button>
+              <button class="remove-btn" data-index="${idx}">Hapus</button>
             </div>
           </div>
-        </div>
-      `;
+        </div>`;
     });
 
-    totalEl.textContent = "Rp " + total.toLocaleString("id-ID");
-  }
+    totalEl.textContent = `Rp ${total.toLocaleString("id-ID")}`;
+  };
 
   if (cartContainer) {
     cartContainer.addEventListener("click", (e) => {
@@ -219,10 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (e.target.classList.contains("buy-now-cart")) {
         const item = cart[e.target.dataset.index];
-        localStorage.setItem("buyNow", JSON.stringify({
-          isSingle: true,
-          product: item
-        }));
+        localStorage.setItem("buyNow", JSON.stringify({ isSingle: true, product: item }));
         cart.splice(e.target.dataset.index, 1);
         saveCart(cart);
         window.location.href = "order.html";
@@ -230,103 +200,82 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const clearBtn = document.getElementById("clear-cart");
-  if (clearBtn) {
-    clearBtn.addEventListener("click", () => {
-      localStorage.removeItem("cart");
-      renderCart();
-      updateCartBadge();
-    });
-  }
+  document.getElementById("clear-cart")?.addEventListener("click", () => {
+    localStorage.removeItem("cart");
+    renderCart();
+    updateCartBadge();
+  });
 
   renderCart();
   updateCartBadge();
 
+  // ============================================================
+  // ORDER PAGE
+  // ============================================================
 
-// ============================================================
-// 📝 ORDER PAGE — Auto-fill & Dropdown Dinamis
-// ============================================================
+  const kategori = document.getElementById("kategori");
+  const produk = document.getElementById("produk");
 
-const kategori = document.getElementById("kategori");
-const produk = document.getElementById("produk");
-
-if (kategori && produk) {
-  // Fungsi untuk isi dropdown produk berdasarkan kategori
-  function renderProductsDropdown(cat) {
+  const renderProductsDropdown = (cat) => {
     produk.innerHTML = `<option value="">-- Pilih Produk --</option>`;
-    if (!cat) return;
+    if (cat) {
+      produk.disabled = false;
+      productData[cat].forEach(p => {
+        produk.innerHTML += `<option value="${p.name}">${p.name}</option>`;
+      });
+    } else {
+      produk.disabled = true;
+    }
+  };
 
-    productData[cat].forEach(p => {
-      produk.innerHTML += `<option value="${p.name}">${p.name}</option>`;
-    });
-
-    // Aktifkan dropdown produk setelah diisi
-    produk.disabled = false;
-  }
-
-  // Ambil data buyNow dari localStorage
   const buyNow = JSON.parse(localStorage.getItem("buyNow"));
 
-  // Jika ada data buyNow, isi form otomatis
-  if (buyNow && buyNow.isSingle) {
+  if (kategori && produk && buyNow?.isSingle) {
     const name = buyNow.product.name;
 
     for (let cat in productData) {
       if (productData[cat].some(p => p.name === name)) {
         kategori.value = cat;
-        renderProductsDropdown(cat); // Isi produk berdasarkan kategori
-        produk.value = name;         // Pilih produk spesifik
+        renderProductsDropdown(cat);
+        produk.value = name;
         break;
       }
     }
 
-    // Isi jumlah
-    document.querySelector("input[name='jumlah']").value =
-      buyNow.product?.quantity || 1;
+    document.querySelector("input[name='jumlah']").value = buyNow.product.quantity || 1;
   }
 
-  // Event: Saat kategori berubah, isi ulang dropdown produk
-  kategori.addEventListener("change", () => {
-    renderProductsDropdown(kategori.value);
+  kategori?.addEventListener("change", () => renderProductsDropdown(kategori.value));
+
+  document.getElementById("orderForm")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    localStorage.removeItem("buyNow");
+
+    e.target.reset();
+    produk.innerHTML = `<option value="">-- Pilih Produk --</option>`;
+    produk.disabled = true;
+
+   alert("Pesanan telah terkirim!");
   });
 
-  // Event: Submit form
-  const form = document.getElementById("orderForm");
-  if (form) {
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      localStorage.removeItem("buyNow"); // Hapus data beli sekarang
+  // ============================================================
+  // HAMBURGER MENU
+  // ============================================================
 
-      // Reset form
-      form.reset();
-      produk.innerHTML = `<option value="">-- Pilih Produk --</option>`;
-      produk.disabled = true;
+  const hamburger = document.querySelector(".hamburger");
+  const navMenu = document.querySelector("nav");
 
-      // Tampilkan pesan sukses
-      document.getElementById("statusMessage").style.display = "block";
+  if (hamburger && navMenu) {
+    hamburger.addEventListener("click", () => {
+      hamburger.classList.toggle("active");
+      navMenu.classList.toggle("active");
+    });
+
+    navMenu.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        hamburger.classList.remove("active");
+        navMenu.classList.remove("active");
+      });
     });
   }
-}
-
-// ============================================================
-// 📌 HAMBURGER MENU (Kini AMAN & Non-bentrok)
-// ============================================================
-
-const hamburger = document.querySelector(".hamburger"); // ⬅️ Pakai .hamburger (class)
-const navMenu = document.querySelector("nav");         // ⬅️ Pakai nav (tag)
-
-if (hamburger && navMenu) {
-  hamburger.addEventListener("click", () => {
-    navMenu.classList.toggle("active");
-    hamburger.classList.toggle("active");
-  });
-
-  const navLinks = navMenu.querySelectorAll("a");
-  navLinks.forEach(link => {
-    link.addEventListener("click", () => {
-      navMenu.classList.remove("active");
-      hamburger.classList.remove("active");
-    });
-  });
-}
-})
+});
