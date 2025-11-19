@@ -1,41 +1,34 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8"> <!-- Mengatur karakter teks agar semua huruf & simbol tampil dengan benar -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Agar tampilan web responsif di HP/laptop -->
-  <title>About Us - Toko Aruna</title> <!-- Judul halaman yang muncul di tab browser -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>About Us - Toko Aruna</title> 
   
-  <!-- Menghubungkan file CSS utama untuk tampilan -->
   <link rel="stylesheet" href="style.css">
   
-  <!-- Menyambungkan Font Awesome agar bisa menggunakan ikon (📍☎️✉️ dll) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
-  <!-- 🔹 Bagian Header: berisi logo, navigasi menu, dan hamburger (untuk tampilan mobile) -->
   <header>
-<!-- 🔹 Logo toko -->
   <div class="logo-container">
     <img src="./images/aruna.png" class="logo" alt="Logo Toko Aruna">
     <span class="logo-text">Toko Aruna Blitar</span>
   </div>    
     <nav>
-      <!-- Menu navigasi utama -->
       <a href="index.html">Home</a>
       <a href="product.html">Product</a>
       <a href="order.html">Order</a>
-      <a href="about-us.html" class="active">About us</a> <!-- Halaman aktif -->
+      <a href="about-us.html" class="active">About us</a> 
       <a href="developer.html">Developer</a>
 
-       <!-- 🔹 Ikon keranjang dengan badge -->
      <a href="cart.html" class="cart-icon">
      <i class="fa-solid fa-cart-shopping"></i>
       <span id="cart-count" class="cart-badge"></span>
      </a>
     </nav>
 
-    <!-- Tombol hamburger (muncul di layar kecil) -->
     <div class="hamburger">
       <span></span>
       <span></span>
@@ -43,12 +36,10 @@
     </div>
   </header>
 
-  <!-- 🔹 Bagian Utama (Main Content) -->
   <main class="about">
     <h2>Profil Perusahaan</h2>
     <p><strong>Nama Pemilik:</strong> Yuniar Rahmawati</p>
 
-    <!-- Seksi tentang perusahaan -->
     <section>
       <h3>Tentang Kami</h3>
       <p>
@@ -57,20 +48,17 @@
       </p>
     </section>
 
-    <!-- Visi perusahaan -->
     <h3>Visi</h3>
     <p>
       Menjadi toko yang terpercaya menghadirkan produk alat tulis, aksesoris, dan kosmetik berkualitas.
     </p>
 
-    <!-- Misi perusahaan -->
     <h3>Misi</h3>
     <ul>
       <li>Memberikan pengalaman belanja yang menyenangkan.</li>
       <li>Menyediakan produk terbaik dengan harga terjangkau.</li>
     </ul>
 
-    <!-- Alamat dengan Google Maps -->
     <h3>Alamat</h3>
     <iframe 
       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.5417365417843!2d112.305987474054!3d-8.046089180360587!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e789240b5167295%3A0xe738464027e4a61!2sTOKO%20ARUNA!5e0!3m2!1sen!2sid!4v1761535647472!5m2!1sen!2sid" 
@@ -83,24 +71,20 @@
     </iframe>
   </main>
 
-  <!-- 🔹 Bagian Footer: berisi kontak toko -->
   <footer class="footer">
     <div class="footer-contact">
       
-      <!-- Alamat toko -->
       <a href="https://maps.app.goo.gl/qDjy7xkhr2C5efDHA"
          target="_blank" class="footer-item">
         <i class="fa-solid fa-location-dot"></i>
         <span>Jl. Raya Kawi, Mandingasem, Gandusari, Kec. Gandusari, Kabupaten Blitar, Jawa Timur</span>
       </a>
 
-      <!-- Nomor WhatsApp -->
       <a href="https://wa.me/6285707938522" target="_blank" class="footer-item">
         <i class="fa-solid fa-phone"></i>
         <span>0857-0793-8522</span>
       </a>
 
-      <!-- Email -->
       <a href="mailto:tokoarunaatk@gmail.com" class="footer-item">
         <i class="fa-solid fa-envelope"></i>
         <span>tokoarunaatk@gmail.com</span>
