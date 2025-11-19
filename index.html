@@ -1,34 +1,24 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <!-- 🔹 Menentukan jenis dokumen HTML5 -->
   <meta charset="UTF-8">
 
-  <!-- 🔹 Membuat tampilan web menyesuaikan ukuran layar (responsif) -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- 🔹 Judul halaman yang muncul di tab browser -->
   <title>Toko Aruna - Home</title>
 
-  <!-- 🔹 Menghubungkan file CSS utama -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- 🔹 Menggunakan ikon dari Font Awesome (untuk ikon telepon, email, dsb.) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
-<!-- ✅ Tambahkan class 'home-page' di body -->
-<!-- Class ini dipakai agar halaman index.html bisa punya background gambar -->
 <body class="home-page">
 
-  <!-- ===================== BAGIAN HEADER ===================== -->
   <header>
-    <!-- 🔹 Logo toko -->
   <div class="logo-container">
     <img src="./images/aruna.png" class="logo" alt="Logo Toko Aruna">
     <span class="logo-text">Toko Aruna Blitar</span>
   </div>
-    <!-- 🔹 Navigasi utama -->
     <nav>
       <a href="index.html" class="active">Home</a>
       <a href="product.html">Product</a>
@@ -36,14 +26,12 @@
       <a href="about-us.html">About us</a>
       <a href="developer.html">Developer</a>
 
-      <!-- 🔹 Ikon keranjang dengan badge -->
      <a href="cart.html" class="cart-icon">
      <i class="fa-solid fa-cart-shopping"></i>
       <span id="cart-count" class="cart-badge"></span>
      </a>
     </nav>
 
-    <!-- 🔹 Tombol hamburger (navigasi mobile) -->
     <div class="hamburger">
       <span></span>
       <span></span>
@@ -51,10 +39,8 @@
     </div>
   </header>
 
-  <!-- ===================== BAGIAN UTAMA (ISI HALAMAN HOME) ===================== -->
   <main class="home">
 
-    <!-- 🔹 Teks sambutan -->
     <div class="home-text">
       <p>
         <span>Selamat Datang di Toko Aruna Blitar!</span><br>
@@ -63,31 +49,25 @@
       </p>
     </div>
    
-    <!-- 🔹 Kotak Order Now -->
   <div class="order-now-box">
     <p>Siap belanja? Yuk pilih produk favoritmu!</p>
     <a href="product.html" class="btn-order">🛒 Order Now</a>
   </div>
   </main>
 
-  <!-- ===================== BAGIAN FOOTER ===================== -->
   <footer class="footer">
 
-    <!-- 🔹 Kontak toko -->
     <div class="footer-contact">
-      <!-- 📍 Alamat -->
       <a href="https://maps.app.goo.gl/qDjy7xkhr2C5efDHA" target="_blank" class="footer-item">
         <i class="fa-solid fa-location-dot"></i>
         <span>Jl. Raya Kawi, Mandingasem, Gandusari, Kabupaten Blitar, Jawa Timur</span>
       </a>
 
-      <!-- 📞 WhatsApp -->
       <a href="https://wa.me/6285707938522" target="_blank" class="footer-item">
         <i class="fa-solid fa-phone"></i>
         <span>0857-0793-8522</span>
       </a>
 
-      <!-- ✉️ Email -->
       <a href="mailto:tokoarunaatk@gmail.com" class="footer-item">
         <i class="fa-solid fa-envelope"></i>
         <span>tokoarunaatk@gmail.com</span>
