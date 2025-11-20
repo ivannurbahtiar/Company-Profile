@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-
   const productData = {
     atk: [
       { name: "Notebook", price: "Rp 4500", img: "notebook.jpg" },
