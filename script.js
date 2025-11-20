@@ -1,8 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ============================================================
-  // 🔥 DATA PRODUK
-  // ============================================================
 
   const productData = {
     atk: [
