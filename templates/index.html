@@ -7,7 +7,7 @@
 
   <title>Toko Aruna - Home</title>
 
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -16,17 +16,18 @@
 
   <header>
   <div class="logo-container">
-    <img src="./images/aruna.png" class="logo" alt="Logo Toko Aruna">
+<img src="{{ url_for('static', filename='images/aruna.png') }}" class="logo" alt="Logo Toko Aruna">
     <span class="logo-text">Toko Aruna Blitar</span>
   </div>
     <nav>
-      <a href="index.html" class="active">Home</a>
-      <a href="product.html">Product</a>
-      <a href="order.html">Order</a>
-      <a href="about-us.html">About us</a>
-      <a href="developer.html">Developer</a>
-
-     <a href="cart.html" class="cart-icon">
+      <!-- SESUDAH -->
+<a href="{{ url_for('index') }}">Home</a>
+<a href="{{ url_for('product') }}">Product</a>
+<a href="{{ url_for('order') }}">Order</a>
+<a href="{{ url_for('about') }}">About us</a>
+<a href="{{ url_for('developer') }}">Developer</a>
+<a href="{{ url_for('cart') }}">...</a>
+<a href="{{ url_for('product') }}" class="btn-order">🛒 Order Now</a>
      <i class="fa-solid fa-cart-shopping"></i>
       <span id="cart-count" class="cart-badge"></span>
      </a>
@@ -51,7 +52,7 @@
    
   <div class="order-now-box">
     <p>Siap belanja? Yuk pilih produk favoritmu!</p>
-    <a href="product.html" class="btn-order">🛒 Order Now</a>
+    <a href="product" class="btn-order">🛒 Order Now</a>
   </div>
   </main>
 
@@ -76,6 +77,6 @@
 
   </footer>
 
-  <script src="script.js"></script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

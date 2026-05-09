@@ -2,33 +2,29 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>About Us - Toko Aruna</title> 
-  
-  <link rel="stylesheet" href="style.css">
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Toko Aruna</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
   <header>
-  <div class="logo-container">
-    <img src="./images/aruna.png" class="logo" alt="Logo Toko Aruna">
-    <span class="logo-text">Toko Aruna Blitar</span>
-  </div>    
+    <div class="logo-container">
+      <img src="{{ url_for('static', filename='images/aruna.png') }}" class="logo" alt="Logo Toko Aruna">
+      <span class="logo-text">Toko Aruna Blitar</span>
+    </div>
     <nav>
-      <a href="index.html">Home</a>
-      <a href="product.html">Product</a>
-      <a href="order.html">Order</a>
-      <a href="about-us.html" class="active">About us</a> 
-      <a href="developer.html">Developer</a>
-
-     <a href="cart.html" class="cart-icon">
-     <i class="fa-solid fa-cart-shopping"></i>
-      <span id="cart-count" class="cart-badge"></span>
-     </a>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('product') }}">Product</a>
+      <a href="{{ url_for('order') }}">Order</a>
+      <a href="{{ url_for('about') }}" class="active">About us</a>
+      <a href="{{ url_for('developer') }}">Developer</a>
+      <a href="{{ url_for('cart') }}" class="cart-icon">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span id="cart-count" class="cart-badge"></span>
+      </a>
     </nav>
-
     <div class="hamburger">
       <span></span>
       <span></span>
@@ -60,31 +56,27 @@
     </ul>
 
     <h3>Alamat</h3>
-    <iframe 
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.5417365417843!2d112.305987474054!3d-8.046089180360587!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e789240b5167295%3A0xe738464027e4a61!2sTOKO%20ARUNA!5e0!3m2!1sen!2sid!4v1761535647472!5m2!1sen!2sid" 
-      width="600" 
-      height="450" 
-      style="border:0;" 
-      allowfullscreen="" 
-      loading="lazy" 
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.5417365417843!2d112.305987474054!3d-8.046089180360587!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e789240b5167295%3A0xe738464027e4a61!2sTOKO%20ARUNA!5e0!3m2!1sen!2sid!4v1761535647472!5m2!1sen!2sid"
+      width="600"
+      height="450"
+      style="border:0;"
+      allowfullscreen=""
+      loading="lazy"
       referrerpolicy="no-referrer-when-downgrade">
     </iframe>
   </main>
 
   <footer class="footer">
     <div class="footer-contact">
-      
-      <a href="https://maps.app.goo.gl/qDjy7xkhr2C5efDHA"
-         target="_blank" class="footer-item">
+      <a href="https://maps.app.goo.gl/qDjy7xkhr2C5efDHA" target="_blank" class="footer-item">
         <i class="fa-solid fa-location-dot"></i>
         <span>Jl. Raya Kawi, Mandingasem, Gandusari, Kec. Gandusari, Kabupaten Blitar, Jawa Timur</span>
       </a>
-
       <a href="https://wa.me/6285707938522" target="_blank" class="footer-item">
         <i class="fa-solid fa-phone"></i>
         <span>0857-0793-8522</span>
       </a>
-
       <a href="mailto:tokoarunaatk@gmail.com" class="footer-item">
         <i class="fa-solid fa-envelope"></i>
         <span>tokoarunaatk@gmail.com</span>
@@ -92,6 +84,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

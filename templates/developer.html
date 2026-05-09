@@ -4,27 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Developer - Toko Aruna</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="developer-page">
   <header>
-  <div class="logo-container">
-    <img src="./images/aruna.png" class="logo" alt="Logo Toko Aruna">
-    <span class="logo-text">Toko Aruna Blitar</span>
-  </div>
-      <nav>
-      <a href="index.html">Home</a>
-      <a href="product.html">Product</a>
-      <a href="order.html">Order</a>
-      <a href="about-us.html">About us</a>
-      <a href="developer.html" class="active">Developer</a>
-
-     <a href="cart.html" class="cart-icon">
-     <i class="fa-solid fa-cart-shopping"></i>
-      <span id="cart-count" class="cart-badge"></span>
-     </a>
+    <div class="logo-container">
+      <img src="{{ url_for('static', filename='images/aruna.png') }}" class="logo" alt="Logo Toko Aruna">
+      <span class="logo-text">Toko Aruna Blitar</span>
+    </div>
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('product') }}">Product</a>
+      <a href="{{ url_for('order') }}">Order</a>
+      <a href="{{ url_for('about') }}">About us</a>
+      <a href="{{ url_for('developer') }}" class="active">Developer</a>
+      <a href="{{ url_for('cart') }}" class="cart-icon">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span id="cart-count" class="cart-badge"></span>
+      </a>
     </nav>
     <div class="hamburger">
       <span></span><span></span><span></span>
@@ -34,7 +32,7 @@
   <main class="developer-page">
 
     <div class="dev-card">
-      <img src="./images/Latar Biru Akt. 14.png" alt="Ivan Nurbahtiar">
+      <img src="{{ url_for('static', filename='images/Latar Biru Akt. 14.png') }}" alt="Ivan Nurbahtiar">
       <p>Ivan Nurbahtiar</p>
       <a href="https://ivannurbahtiar.github.io/test/" target="_blank" class="github-link">
         <i class="fa-brands fa-github"></i> Portfolio
@@ -42,7 +40,7 @@
     </div>
 
     <div class="dev-card">
-      <img src="./images/bima.jpg" alt="Helmy Bima Pratama">
+      <img src="{{ url_for('static', filename='images/bima.jpg') }}" alt="Helmy Bima Pratama">
       <p>Helmy Bima Pratama</p>
       <a href="https://helmy-bima.github.io/Portofolio-Digital/portofolio/index.html" target="_blank" class="github-link">
         <i class="fa-brands fa-github"></i> Portfolio
@@ -50,7 +48,7 @@
     </div>
 
     <div class="dev-card">
-      <img src="./images/hani.jpg" alt="Bintang Hanifa A.">
+      <img src="{{ url_for('static', filename='images/hani.jpg') }}" alt="Bintang Hanifa A.">
       <p>Bintang Haniva A.</p>
       <a href="https://bintanghaniva123.github.io/haniva/" target="_blank" class="github-link">
         <i class="fa-brands fa-github"></i> Portfolio
@@ -58,7 +56,7 @@
     </div>
 
     <div class="dev-card">
-      <img src="./images/kesa.jpg" alt="Kesanina Promay W">
+      <img src="{{ url_for('static', filename='images/kesa.jpg') }}" alt="Kesanina Promay W">
       <p>Kesanina Promay W</p>
       <a href="https://kesanina.github.io/portofolio/" target="_blank" class="github-link">
         <i class="fa-brands fa-github"></i> Portfolio
@@ -69,17 +67,14 @@
 
   <footer class="footer">
     <div class="footer-contact">
-      <a href="https://maps.app.goo.gl/qDjy7xkhr2C5efDHA"
-         target="_blank" class="footer-item">
+      <a href="https://maps.app.goo.gl/qDjy7xkhr2C5efDHA" target="_blank" class="footer-item">
         <i class="fa-solid fa-location-dot"></i>
         <span>Jl. Raya Kawi, Mandingasem, Gandusari, Kabupaten Blitar</span>
       </a>
-
       <a href="https://wa.me/6285707938522" target="_blank" class="footer-item">
         <i class="fa-solid fa-phone"></i>
         <span>0857-0793-8522</span>
       </a>
-
       <a href="mailto:tokoarunaatk@gmail.com" class="footer-item">
         <i class="fa-solid fa-envelope"></i>
         <span>tokoarunaatk@gmail.com</span>
@@ -87,6 +82,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

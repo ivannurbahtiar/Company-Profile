@@ -317,7 +317,6 @@ main {
   padding: 5px 10px;
 }
 
-/* Daftar produk ditampilkan grid */
 #product-container {
   display: flex;
   flex-wrap: wrap;
@@ -325,37 +324,35 @@ main {
   margin-top: 30px;
 }
 
-.product-item {
+/* ← Hanya bagian ini yang berubah, product-item → product-card */
+.product-card {
   background: #fff;
   color: black;
   padding: 10px;
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  width: 200px;          /* pastikan fix size */
+  width: 200px;
   margin: 10px;
   box-sizing: border-box;
 }
 
-.product-item img {
-  width: 100%;       
-  object-fit: cover;      /* Crop otomatis agar rapi */
+.product-card img {
+  width: 100%;
+  object-fit: cover;
   border-radius: 10px;
-  height: 200px;     /* Tinggi dibuat sama */
+  height: 200px;
   object-fit: cover;
 }
 
-
-/* Wrapper tombol */
 .product-buttons {
   display: flex;
   gap: 8px;
   margin-top: 10px;
 }
 
-/* Style tombol umum */
 .product-buttons button {
-  flex: 1;                     /* Bagi ruang sama rata */
+  flex: 1;
   padding: 8px 10px;
   border: none;
   cursor: pointer;
@@ -363,23 +360,20 @@ main {
   font-size: 14px;
   font-weight: bold;
   transition: 0.2s;
-  width: 100%;                 /* Pastikan tidak melewati batas */
+  width: 100%;
   box-sizing: border-box;
 }
 
-/* Tombol keranjang */
 .cart-btn {
   background-color: #ffea70;
   color: black;
 }
 
-/* Tombol beli sekarang */
 .buy-btn {
   background-color: #9e2e47;
   color: white;
 }
 
-/* Efek hover */
 .product-buttons button:hover {
   opacity: 0.85;
   transform: scale(1.03);
