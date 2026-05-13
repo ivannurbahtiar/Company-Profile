@@ -20,9 +20,14 @@
       <a href="{{ url_for('order') }}">Order</a>
       <a href="{{ url_for('about') }}" class="active">About us</a>
       <a href="{{ url_for('developer') }}">Developer</a>
+      {% if session.get('username') %}
+        <span class="nav-user">Halo, {{ session.get('username') }}!</span>
+        <a href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+      {% endif %}
       <a href="{{ url_for('cart') }}" class="cart-icon">
-        <i class="fa-solid fa-cart-shopping"></i>
-        <span id="cart-count" class="cart-badge"></span>
+        <i class="fa-solid fa-clock-rotate-left"></i>
       </a>
     </nav>
     <div class="hamburger">
@@ -56,15 +61,28 @@
     </ul>
 
     <h3>Alamat</h3>
-    <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.5417365417843!2d112.305987474054!3d-8.046089180360587!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e789240b5167295%3A0xe738464027e4a61!2sTOKO%20ARUNA!5e0!3m2!1sen!2sid!4v1761535647472!5m2!1sen!2sid"
-      width="600"
-      height="450"
-      style="border:0;"
-      allowfullscreen=""
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
+
+    <!-- Wrapper agar peta bisa diklik dan membuka Google Maps -->
+    <div class="maps-wrapper">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.5417365417843!2d112.305987474054!3d-8.046089180360587!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e789240b5167295%3A0xe738464027e4a61!2sTOKO%20ARUNA!5e0!3m2!1sen!2sid!4v1761535647472!5m2!1sen!2sid"
+        width="600"
+        height="450"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+      <!-- Overlay transparan di atas iframe agar klik membuka Google Maps -->
+      <a
+        href="https://maps.app.goo.gl/qDjy7xkhr2C5efDHA"
+        target="_blank"
+        class="maps-overlay"
+        title="Buka di Google Maps">
+        <span><i class="fa-solid fa-location-dot"></i> Buka di Google Maps</span>
+      </a>
+    </div>
+
   </main>
 
   <footer class="footer">

@@ -14,16 +14,21 @@
       <span class="logo-text">Toko Aruna Blitar</span>
     </div>
     <nav>
-      <a href="{{ url_for('index') }}">Home</a>
-      <a href="{{ url_for('product') }}">Product</a>
-      <a href="{{ url_for('order') }}">Order</a>
-      <a href="{{ url_for('about') }}">About us</a>
-      <a href="{{ url_for('developer') }}" class="active">Developer</a>
-      <a href="{{ url_for('cart') }}" class="cart-icon">
-        <i class="fa-solid fa-cart-shopping"></i>
-        <span id="cart-count" class="cart-badge"></span>
-      </a>
-    </nav>
+  <a href="{{ url_for('index') }}">Home</a>
+  <a href="{{ url_for('product') }}">Product</a>
+  <a href="{{ url_for('order') }}">Order</a>
+  <a href="{{ url_for('about') }}">About us</a>
+  <a href="{{ url_for('developer') }}">Developer</a>
+  {% if session.get('username') %}
+    <span class="nav-user">Halo, {{ session.get('username') }}!</span>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  {% else %}
+    <a href="{{ url_for('login') }}">Login</a>
+  {% endif %}
+  <a href="{{ url_for('cart') }}" class="cart-icon">
+    <i class="fa-solid fa-clock-rotate-left"></i>
+  </a>
+</nav>
     <div class="hamburger">
       <span></span><span></span><span></span>
     </div>

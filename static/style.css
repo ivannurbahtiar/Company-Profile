@@ -324,7 +324,6 @@ main {
   margin-top: 30px;
 }
 
-/* ← Hanya bagian ini yang berubah, product-item → product-card */
 .product-card {
   background: #fff;
   color: black;
@@ -444,33 +443,45 @@ main {
 form {
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: 340px;
   margin: 20px auto;
   background-color: #d74b68;
   padding: 20px;
   border-radius: 10px;
+  box-sizing: border-box;
 }
 
 label {
   margin-top: 10px;
 }
 
-input, button {
-  width: 250px;
+input, select {
+  width: 100%;
   margin: 10px 0;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-family: 'Comic Sans MS', cursive;
+  font-size: 14px;
 }
 
-button {
+button[type="submit"] {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
   background: #9e2e47;
   color: white;
   cursor: pointer;
-  border: none;
+  font-family: 'Comic Sans MS', cursive;
+  font-size: 15px;
+  font-weight: bold;
+  box-sizing: border-box;
 }
 
-button:hover {
+button[type="submit"]:hover {
   background: #7d2438;
 }
 
@@ -719,3 +730,122 @@ ul {
   display: inline-block;
 }
 
+.nav-user {
+  color: #ffea70;
+  font-weight: bold;
+  margin: 0 10px;
+}
+
+.login-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px auto;
+}
+
+.tab-btn {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 8px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.tab-btn.active {
+  background: #ffea70;
+  color: black;
+  border-color: #ffea70;
+}
+
+/* =========================================================
+   TAMBAHKAN INI DI PALING BAWAH style.css
+   ========================================================= */
+
+/* Kotak peringatan belum login di halaman Order */
+.login-required-box {
+  background: #9e2e47;
+  border-radius: 12px;
+  padding: 30px 20px;
+  margin: 30px auto;
+  max-width: 340px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.login-required-box p {
+  font-size: 1em;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.btn-login-now {
+  display: inline-block;
+  background: #ffea70;
+  color: #9e2e47;
+  font-weight: bold;
+  padding: 10px 28px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 1em;
+  transition: 0.3s;
+}
+
+.btn-login-now:hover {
+  background: #ffe033;
+  transform: translateY(-2px);
+}
+
+/* Wrapper peta Google Maps agar bisa diklik */
+.maps-wrapper {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  margin: 10px auto;
+}
+
+.maps-wrapper iframe {
+  display: block;
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+/* Overlay transparan di atas iframe */
+.maps-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 12px;
+  text-decoration: none;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0); /* Transparan, tidak menutupi tampilan peta */
+  transition: background 0.3s;
+  box-sizing: border-box;
+}
+
+.maps-overlay:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.maps-overlay span {
+  background: #fff;
+  color: #c43756;
+  font-weight: bold;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.maps-overlay:hover span {
+  opacity: 1;
+}

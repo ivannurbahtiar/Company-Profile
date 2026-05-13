@@ -1,26 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   // ============================================================
-  // CART SYSTEM
-  // ============================================================
-
-  const getCart = () => JSON.parse(localStorage.getItem("cart")) || [];
-
-  const saveCart = (cart) => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-    updateCartBadge();
-  };
-
-  const updateCartBadge = () => {
-    const badge = document.getElementById("cart-count");
-    if (!badge) return;
-    const count = getCart().reduce((a, b) => a + (b.quantity || 1), 0);
-    badge.textContent = count;
-    badge.style.display = count > 0 ? "flex" : "none";
-  };
-
-  // ============================================================
-  // PRODUCT PAGE - Filter kategori (show/hide dari Jinja2)
+  // PRODUCT PAGE - Filter kategori
   // ============================================================
 
   const productContainer = document.getElementById("product-container");
@@ -42,29 +23,19 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
+    // Ambil data dari data-attribute tombol, bukan dari querySelector h3/p
     productContainer.addEventListener("click", (e) => {
-      const card = e.target.closest(".product-card");
-      if (!card) return;
+      const btn = e.target.closest(".buy-btn");
+      if (!btn) return;
 
       const product = {
-        name: card.querySelector("h3").textContent,
-        price: card.querySelector("p").textContent,
-        img: card.querySelector("img").src.split("/static/images/")[1],
-        category: card.dataset.category
+        name    : btn.dataset.name,
+        price   : btn.dataset.price,
+        category: btn.dataset.category,
+        quantity: 1
       };
-
-      if (e.target.classList.contains("cart-btn")) {
-        const cart = getCart();
-        const exist = cart.find(i => i.name === product.name);
-        exist ? exist.quantity++ : cart.push({ ...product, quantity: 1 });
-        saveCart(cart);
-        alert(`${product.name} ditambahkan ke keranjang!`);
-      }
-
-      if (e.target.classList.contains("buy-btn")) {
-        localStorage.setItem("buyNow", JSON.stringify({ isSingle: true, product }));
-        window.location.href = "/order";
-      }
+      localStorage.setItem("buyNow", JSON.stringify({ isSingle: true, product }));
+      window.location.href = "/order";
     });
   }
 
@@ -72,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // MODAL IMAGE
   // ============================================================
 
-  const modal = document.getElementById("imgModal");
+  const modal    = document.getElementById("imgModal");
   const modalImg = document.getElementById("modalImage");
   const closeBtn = document.querySelector(".close");
 
@@ -87,126 +58,122 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("click", (e) => e.target === modal && (modal.style.display = "none"));
 
   // ============================================================
-  // CART PAGE
+  // ORDER PAGE
   // ============================================================
 
-  const cartContainer = document.getElementById("cart-container");
-  const totalEl = document.getElementById("cart-total");
+  const kategori = document.getElementById("kategori");
+  const produk   = document.getElementById("produk");
 
-  const renderCart = () => {
-    if (!cartContainer) return;
-    const cart = getCart();
-    cartContainer.innerHTML = "";
-
-    if (!cart.length) {
-      cartContainer.innerHTML = "<p>Keranjang kosong 😢</p>";
-      totalEl.textContent = "Rp 0";
-      return;
-    }
-
-    let total = 0;
-    cart.forEach((item, idx) => {
-      const price = parseInt(item.price.replace(/[^0-9]/g, ""));
-      const qty = item.quantity;
-      total += price * qty;
-
-      cartContainer.innerHTML += `
-        <div class="cart-item">
-          <img src="/static/images/${item.img}" alt="">
-          <div class="item-info">
-            <h4>${item.name}</h4>
-            <p>Harga: ${item.price}</p>
-            <p>Jumlah: ${qty}</p>
-            <div class="cart-actions">
-              <button class="buy-now-cart" data-index="${idx}">Beli Sekarang</button>
-              <button class="remove-btn" data-index="${idx}">Hapus</button>
-            </div>
-          </div>
-        </div>`;
-    });
-
-    totalEl.textContent = `Rp ${total.toLocaleString("id-ID")}`;
-  };
-
-  if (cartContainer) {
-    cartContainer.addEventListener("click", (e) => {
-      const cart = getCart();
-
-      if (e.target.classList.contains("remove-btn")) {
-        cart.splice(e.target.dataset.index, 1);
-        saveCart(cart);
-        renderCart();
-      }
-
-      if (e.target.classList.contains("buy-now-cart")) {
-        const item = cart[e.target.dataset.index];
-        localStorage.setItem("buyNow", JSON.stringify({ isSingle: true, product: item }));
-        cart.splice(e.target.dataset.index, 1);
-        saveCart(cart);
-        window.location.href = "/order";
-      }
-    });
-  }
-
-  document.getElementById("clear-cart")?.addEventListener("click", () => {
-    localStorage.removeItem("cart");
-    renderCart();
-    updateCartBadge();
-  });
-
-  renderCart();
-  updateCartBadge();
-
-// ============================================================
-// ORDER PAGE
-// ============================================================
-
-const kategori = document.getElementById("kategori");
-const produk   = document.getElementById("produk");
-
-const filterProductsDropdown = (cat) => {
-  if (!produk || typeof allProducts === "undefined") return;
-
-  produk.innerHTML = '<option value="">-- Pilih Produk --</option>';
-
-  if (cat) {
-    produk.disabled = false;
-    allProducts
-      .filter(p => p.kategori === cat)
-      .forEach(p => {
+  const filterProductsDropdown = (cat) => {
+    if (!produk || typeof allProducts === "undefined") return;
+    produk.innerHTML = '<option value="">-- Pilih Produk --</option>';
+    if (cat) {
+      produk.disabled = false;
+      allProducts.filter(p => p.kategori === cat).forEach(p => {
         const opt = document.createElement("option");
         opt.value = p.nama;
         opt.textContent = p.nama;
         produk.appendChild(opt);
       });
-  } else {
-    produk.disabled = true;
+    } else {
+      produk.disabled = true;
+    }
+  };
+
+  kategori?.addEventListener("change", () => filterProductsDropdown(kategori.value));
+
+  // Isi form order otomatis dari localStorage
+  const buyNow = JSON.parse(localStorage.getItem("buyNow"));
+  if (buyNow?.isSingle) {
+    const cat = buyNow.product.category;
+    if (kategori) {
+      kategori.value = cat;
+      // Trigger event change agar dropdown produk terisi
+      kategori.dispatchEvent(new Event("change"));
+    }
+    // Tunggu sebentar agar dropdown produk selesai diisi baru pilih produknya
+    setTimeout(() => {
+      if (produk) produk.value = buyNow.product.name;
+    }, 50);
+    const jumlahInput = document.querySelector("input[name='jumlah']");
+    if (jumlahInput) jumlahInput.value = buyNow.product.quantity || 1;
+    localStorage.removeItem("buyNow");
   }
-};
 
-kategori?.addEventListener("change", () => filterProductsDropdown(kategori.value));
+  // ============================================================
+  // VALIDASI KONTAK (No. WA atau Email)
+  // ============================================================
 
-// Auto-fill dari tombol Order / Beli Sekarang di product.html
-const buyNow = JSON.parse(localStorage.getItem("buyNow"));
-if (buyNow?.isSingle) {
-  const cat = buyNow.product.category;
-  if (kategori) kategori.value = cat;
-  filterProductsDropdown(cat);
-  if (produk) produk.value = buyNow.product.name;
-  const jumlahInput = document.querySelector("input[name='jumlah']");
-  if (jumlahInput) jumlahInput.value = buyNow.product.quantity || 1;
-  localStorage.removeItem("buyNow");
-}
+  const kontakInput = document.getElementById("kontak");
+  const kontakError = document.getElementById("kontak-error");
+  const kontakInfo  = document.getElementById("kontak-info");
 
-document.getElementById("orderForm")?.addEventListener("submit", () => {
-  localStorage.removeItem("buyNow");
-});
+  function validasiKontak(nilai) {
+    const val = nilai.trim();
+
+    // Cek email
+    const polEmail = /^[\w\.-]+@[\w\.-]+\.\w{2,}$/;
+    if (polEmail.test(val)) return { valid: true, tipe: "email" };
+
+    // Cek nomor WA (hapus spasi, strip, plus)
+    const nomor = val.replace(/[\s\-\+]/g, '');
+    const polWA = /^(0|62)\d{9,12}$/;
+    if (polWA.test(nomor) && nomor.length >= 10 && nomor.length <= 14) {
+      return { valid: true, tipe: "whatsapp" };
+    }
+
+    return { valid: false, tipe: null };
+  }
+
+  if (kontakInput) {
+    kontakInput.addEventListener("input", () => {
+      const hasil = validasiKontak(kontakInput.value);
+
+      if (kontakInput.value.trim() === "") {
+        kontakError.style.display = "none";
+        kontakInfo.style.display  = "block";
+        kontakInfo.style.color    = "gray";
+        kontakInfo.textContent    = "Masukkan nomor WhatsApp (10-13 digit) atau alamat email.";
+        return;
+      }
+
+      if (hasil.valid) {
+        kontakError.style.display = "none";
+        kontakInfo.style.display  = "block";
+        kontakInfo.style.color    = "green";
+        kontakInfo.textContent    = hasil.tipe === "email"
+          ? "✓ Format email valid."
+          : "✓ Format nomor WhatsApp valid.";
+      } else {
+        kontakInfo.style.display  = "none";
+        kontakError.style.display = "block";
+        kontakError.textContent   = "✗ Format tidak valid. Masukkan nomor WA (cth: 08123456789) atau email (cth: nama@gmail.com).";
+      }
+    });
+  }
+
+  // Cegah submit jika kontak tidak valid
+  document.getElementById("orderForm")?.addEventListener("submit", (e) => {
+    if (kontakInput) {
+      const hasil = validasiKontak(kontakInput.value);
+      if (!hasil.valid) {
+        e.preventDefault();
+        kontakInfo.style.display  = "none";
+        kontakError.style.display = "block";
+        kontakError.textContent   = "✗ Format tidak valid. Masukkan nomor WA (cth: 08123456789) atau email (cth: nama@gmail.com).";
+        kontakInput.focus();
+        return;
+      }
+    }
+    localStorage.removeItem("buyNow");
+  });
+
   // ============================================================
   // HAMBURGER MENU
   // ============================================================
 
   const hamburger = document.querySelector(".hamburger");
-  const navMenu = document.querySelector("nav");
+  const navMenu   = document.querySelector("nav");
 
   if (hamburger && navMenu) {
     hamburger.addEventListener("click", () => {

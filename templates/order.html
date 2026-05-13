@@ -20,9 +20,14 @@
       <a href="{{ url_for('order') }}" class="active">Order</a>
       <a href="{{ url_for('about') }}">About us</a>
       <a href="{{ url_for('developer') }}">Developer</a>
+      {% if session.get('username') %}
+        <span class="nav-user">Halo, {{ session.get('username') }}!</span>
+        <a href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+      {% endif %}
       <a href="{{ url_for('cart') }}" class="cart-icon">
-        <i class="fa-solid fa-cart-shopping"></i>
-        <span id="cart-count" class="cart-badge"></span>
+        <i class="fa-solid fa-clock-rotate-left"></i>
       </a>
     </nav>
     <div class="hamburger">
@@ -36,33 +41,44 @@
     <h2>Form Order</h2>
     <p>Isi data berikut untuk memesan produk.</p>
 
-    <form id="orderForm" action="{{ url_for('submit_order') }}" method="POST">
-      <label>Nama Pembeli :</label>
-      <input type="text" name="nama" required>
+    {% if session.get('username') %}
+      <!-- Jika sudah login, tampilkan form -->
+      <form id="orderForm" action="{{ url_for('submit_order') }}" method="POST">
 
-      <label>Pilih Kategori :</label>
-      <select name="kategori" id="kategori" required>
-        <option value="">-- Pilih Kategori --</option>
-        <option value="atk">ATK</option>
-        <option value="aksesoris">Aksesoris</option>
-        <option value="perlengkapan">Perlengkapan Makan</option>
-        <option value="makeup">Make Up</option>
-        <option value="skincare">Skincare</option>
-      </select>
+        <label>Pilih Kategori :</label>
+        <select name="kategori" id="kategori" required>
+          <option value="">-- Pilih Kategori --</option>
+          <option value="atk">ATK</option>
+          <option value="aksesoris">Aksesoris</option>
+          <option value="perlengkapan">Perlengkapan Makan</option>
+          <option value="makeup">Make Up</option>
+          <option value="skincare">Skincare</option>
+        </select>
 
-      <label>Pilih Produk :</label>
-      <select name="produk" id="produk" required disabled>
-        <option value="">-- Pilih Produk --</option>
-      </select>
+        <label>Pilih Produk :</label>
+        <select name="produk" id="produk" required disabled>
+          <option value="">-- Pilih Produk --</option>
+        </select>
 
-      <label>Jumlah :</label>
-      <input type="number" name="jumlah" required>
+        <label>Jumlah :</label>
+        <input type="number" name="jumlah" min="1" required>
 
-      <label>No. WhatsApp / Email :</label>
-      <input type="text" name="kontak" required>
+        <label>No. WhatsApp / Email :</label>
+        <input type="text" name="kontak" id="kontak" placeholder="Contoh: 08123456789 atau email@gmail.com" required>
+        <small id="kontak-info" style="color: gray;">Masukkan nomor WhatsApp (10-13 digit) atau alamat email.</small>
+        <small id="kontak-error" style="color: red; display: none;"></small>
 
-      <button type="submit">Kirim Pesanan</button>
-    </form>
+        <button type="submit">Kirim Pesanan</button>
+      </form>
+
+    {% else %}
+      <!-- Jika belum login, tampilkan pesan -->
+      <div class="login-required-box">
+        <i class="fa-solid fa-lock" style="font-size: 2em; margin-bottom: 10px;"></i>
+        <p>Kamu harus <strong>login</strong> terlebih dahulu untuk melakukan pemesanan.</p>
+        <a href="{{ url_for('login') }}" class="btn-login-now">Login Sekarang</a>
+      </div>
+    {% endif %}
   </main>
 
   <footer class="footer">
@@ -82,7 +98,6 @@
     </div>
   </footer>
 
-  <!-- allProducts harus di atas script.js! -->
   <script>
     var allProducts = [
       {% for p in products %}

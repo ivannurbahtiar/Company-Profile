@@ -16,13 +16,18 @@
     </div>
     <nav>
       <a href="{{ url_for('index') }}">Home</a>
-      <a href="{{ url_for('product') }}" class="active">Product</a>
+      <a href="{{ url_for('product') }}">Product</a>
       <a href="{{ url_for('order') }}">Order</a>
       <a href="{{ url_for('about') }}">About us</a>
       <a href="{{ url_for('developer') }}">Developer</a>
+      {% if session.get('username') %}
+        <span class="nav-user">Halo, {{ session.get('username') }}!</span>
+        <a href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+      {% endif %}
       <a href="{{ url_for('cart') }}" class="cart-icon">
-        <i class="fa-solid fa-cart-shopping"></i>
-        <span id="cart-count" class="cart-badge"></span>
+        <i class="fa-solid fa-clock-rotate-left"></i>
       </a>
     </nav>
     <div class="hamburger">
@@ -41,15 +46,20 @@
       <button class="prod-btn" data-category="skincare">Skincare</button>
     </div>
 
-    <!-- Produk dirender dari database via Jinja2 -->
     <div id="product-container">
       {% for p in products %}
       <div class="product-card" data-category="{{ p.kategori }}">
-        <img src="{{ url_for('static', filename='images/' + p.gambar) }}" 
+        <img src="{{ url_for('static', filename='images/' + p.gambar) }}"
              alt="{{ p.nama }}" class="product-img">
         <h3>{{ p.nama }}</h3>
         <p>Rp {{ '{:,.0f}'.format(p.harga) }}</p>
-        <a href="{{ url_for('order') }}" class="btn-order">Order</a>
+        <!-- Ubah dari <a> menjadi <button class="buy-btn"> agar localStorage bekerja -->
+        <button class="buy-btn btn-order"
+                data-name="{{ p.nama }}"
+                data-category="{{ p.kategori }}"
+                data-price="Rp {{ '{:,.0f}'.format(p.harga) }}">
+          Order
+        </button>
       </div>
       {% endfor %}
     </div>
