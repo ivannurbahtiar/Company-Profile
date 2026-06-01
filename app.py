@@ -34,14 +34,23 @@ class Product(db.Model):
 
 class Order(db.Model):
     __tablename__ = 'orders'
+
     id           = db.Column(db.Integer, primary_key=True)
     user_id      = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+
     nama_pembeli = db.Column(db.String(100), nullable=False)
+
     kategori     = db.Column(db.String(50), nullable=False)
     produk       = db.Column(db.String(100), nullable=False)
+
+    harga        = db.Column(db.Integer, default=0)
+
     jumlah       = db.Column(db.Integer, nullable=False)
+
     kontak       = db.Column(db.String(100), nullable=True)
+
     tanggal      = db.Column(db.DateTime, default=datetime.now)
+
     status       = db.Column(db.String(20), default='pending')
 
 # ============================================================
@@ -133,7 +142,8 @@ def submit_order():
     produk   = request.form.get('produk')
     jumlah   = request.form.get('jumlah')
     kontak   = request.form.get('kontak', '').strip()
-    nama     = session.get('username', 'Guest')
+
+    nama = session.get('username', 'Guest')
 
     if not all([kategori, produk, jumlah, kontak]):
         return redirect(url_for('order'))
@@ -141,27 +151,53 @@ def submit_order():
     if not validasi_kontak(kontak):
         return redirect(url_for('order'))
 
+    produk_db = Product.query.filter_by(nama=produk).first()
+
+    if not produk_db:
+        return redirect(url_for('order'))
+
     order_baru = Order(
-        user_id      = session.get('user_id'),
-        nama_pembeli = nama,
-        kategori     = kategori,
-        produk       = produk,
-        jumlah       = int(jumlah),
-        kontak       = kontak,
-        tanggal      = datetime.now(),
-        status       = 'pending'
+        user_id=session.get('user_id'),
+        nama_pembeli=nama,
+        kategori=kategori,
+        produk=produk,
+        harga=produk_db.harga,
+        jumlah=int(jumlah),
+        kontak=kontak,
+        tanggal=datetime.now(),
+        status='pending'
     )
 
     db.session.add(order_baru)
     db.session.commit()
-    return redirect(url_for('index'))
+
+    return redirect(url_for('cart'))
 
 @app.route('/cart')
 def cart():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    orders = Order.query.filter_by(user_id=session['user_id']).order_by(Order.tanggal.desc()).all()
-    return render_template('cart.html', orders=orders)
+
+    orders = Order.query.filter_by(
+        user_id=session['user_id']
+    ).order_by(Order.tanggal.desc()).all()
+
+    total_belanja = sum(
+        order.harga * order.jumlah
+        for order in orders
+    )
+
+    total_barang = sum(
+        order.jumlah
+        for order in orders
+    )
+
+    return render_template(
+        'cart.html',
+        orders=orders,
+        total_belanja=total_belanja,
+        total_barang=total_barang
+    )
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

@@ -4,82 +4,194 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Riwayat Pembelian - Toko Aruna</title>
+
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
-  <header>
-    <div class="logo-container">
-      <img src="{{ url_for('static', filename='images/aruna.png') }}" class="logo" alt="Logo Toko Aruna">
-      <span class="logo-text">Toko Aruna Blitar</span>
-    </div>
-    <nav>
-      <a href="{{ url_for('index') }}">Home</a>
-      <a href="{{ url_for('product') }}">Product</a>
-      <a href="{{ url_for('order') }}">Order</a>
-      <a href="{{ url_for('about') }}">About us</a>
-      <a href="{{ url_for('developer') }}">Developer</a>
-      {% if session.get('username') %}
-        <span class="nav-user">Halo, {{ session.get('username') }}!</span>
-        <a href="{{ url_for('logout') }}">Logout</a>
-      {% else %}
-        <a href="{{ url_for('login') }}">Login</a>
-      {% endif %}
-      <a href="{{ url_for('cart') }}" class="cart-icon active">
-        <i class="fa-solid fa-clock-rotate-left"></i>
+
+<header>
+  <div class="logo-container">
+    <img src="{{ url_for('static', filename='images/aruna.png') }}"
+         class="logo"
+         alt="Logo Toko Aruna">
+
+    <span class="logo-text">
+      Toko Aruna Blitar
+    </span>
+  </div>
+
+  <nav>
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('product') }}">Product</a>
+    <a href="{{ url_for('order') }}">Order</a>
+    <a href="{{ url_for('about') }}">About us</a>
+    <a href="{{ url_for('developer') }}">Developer</a>
+
+    {% if session.get('username') %}
+      <span class="nav-user">
+        Halo, {{ session.get('username') }}!
+      </span>
+
+      <a href="{{ url_for('logout') }}">
+        Logout
       </a>
-    </nav>
-    <div class="hamburger">
-      <span></span><span></span><span></span>
-    </div>
-  </header>
-
-  <main class="cart-page">
-    <h2>📋 Riwayat Pembelian</h2>
-    <p style="text-align:center;">Halo, <strong>{{ session.get('username') }}</strong>! Ini daftar pesananmu.</p>
-
-    {% if orders %}
-      {% for o in orders %}
-      <div class="cart-item">
-        <div class="item-info">
-          <h4>{{ o.produk }}</h4>
-          <p>Kategori : {{ o.kategori }}</p>
-          <p>Jumlah   : {{ o.jumlah }} pcs</p>
-          <p>Kontak   : {{ o.kontak }}</p>
-          <p>Tanggal  : {{ o.tanggal.strftime('%d-%m-%Y %H:%M') }}</p>
-          <p>Status   :
-            <strong style="color:
-              {% if o.status == 'selesai' %}#28a745
-              {% elif o.status == 'proses' %}#ffc107
-              {% else %}#dc3545{% endif %}">
-              {{ o.status | upper }}
-            </strong>
-          </p>
-        </div>
-      </div>
-      {% endfor %}
     {% else %}
-      <p style="text-align:center; margin-top:40px;">Belum ada riwayat pembelian 😢</p>
+      <a href="{{ url_for('login') }}">
+        Login
+      </a>
     {% endif %}
-  </main>
 
-  <footer class="footer">
-    <div class="footer-contact">
-      <a href="https://maps.app.goo.gl/qDjy7xkhr2C5efDHA" target="_blank" class="footer-item">
-        <i class="fa-solid fa-location-dot"></i>
-        <span>Jl. Raya Kawi, Mandingasem, Gandusari, Kabupaten Blitar, Jawa Timur</span>
-      </a>
-      <a href="https://wa.me/6285707938522" target="_blank" class="footer-item">
-        <i class="fa-solid fa-phone"></i>
-        <span>0857-0793-8522</span>
-      </a>
-      <a href="mailto:tokoarunaatk@gmail.com" class="footer-item">
-        <i class="fa-solid fa-envelope"></i>
-        <span>tokoarunaatk@gmail.com</span>
-      </a>
+    <a href="{{ url_for('cart') }}" class="cart-icon active">
+      <i class="fa-solid fa-clock-rotate-left"></i>
+    </a>
+  </nav>
+
+  <div class="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</header>
+
+<main class="cart-page">
+
+  <h2 class="cart-title">
+    📋 Riwayat Pembelian
+  </h2>
+
+  <p class="welcome-cart">
+    Halo, <strong>{{ session.get('username') }}</strong>!
+  </p>
+
+  <div class="summary-card">
+
+    <div>
+      <p>Total Pesanan</p>
+      <h3>{{ orders|length }}</h3>
     </div>
-  </footer>
 
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <div>
+      <p>Total Barang</p>
+      <h3>{{ total_barang }}</h3>
+    </div>
+
+    <div>
+      <p>Total Belanja</p>
+      <h3>
+        Rp {{ "{:,.0f}".format(total_belanja).replace(",", ".") }}
+      </h3>
+    </div>
+
+  </div>
+
+  {% if orders %}
+
+    {% for o in orders %}
+
+    <div class="cart-item">
+
+      <div class="item-top">
+
+        <h4>{{ o.produk }}</h4>
+
+        <span class="status
+          {% if o.status == 'selesai' %}
+            status-selesai
+          {% elif o.status == 'proses' %}
+            status-proses
+          {% else %}
+            status-pending
+          {% endif %}
+        ">
+          {{ o.status.upper() }}
+        </span>
+
+      </div>
+
+      <div class="item-info">
+
+        <p>
+          <i class="fa-solid fa-tag"></i>
+          Kategori : {{ o.kategori }}
+        </p>
+
+        <p>
+          <i class="fa-solid fa-money-bill"></i>
+          Harga :
+          Rp {{ "{:,.0f}".format(o.harga).replace(",", ".") }}
+        </p>
+
+        <p>
+          <i class="fa-solid fa-box"></i>
+          Jumlah : {{ o.jumlah }} pcs
+        </p>
+
+        <p class="subtotal">
+          <i class="fa-solid fa-calculator"></i>
+          Subtotal :
+          Rp {{ "{:,.0f}".format(o.harga * o.jumlah).replace(",", ".") }}
+        </p>
+
+        <p>
+          <i class="fa-solid fa-phone"></i>
+          Kontak : {{ o.kontak }}
+        </p>
+
+        <p>
+          <i class="fa-solid fa-calendar"></i>
+          {{ o.tanggal.strftime('%d-%m-%Y %H:%M') }}
+        </p>
+
+      </div>
+
+    </div>
+
+    {% endfor %}
+
+  {% else %}
+
+    <p class="empty-cart">
+      Belum ada riwayat pembelian 😢
+    </p>
+
+  {% endif %}
+
+</main>
+
+<footer class="footer">
+  <div class="footer-contact">
+
+    <a href="https://maps.app.goo.gl/qDjy7xkhr2C5efDHA"
+       target="_blank"
+       class="footer-item">
+      <i class="fa-solid fa-location-dot"></i>
+
+      <span>
+        Jl. Raya Kawi, Mandingasem,
+        Gandusari, Kabupaten Blitar,
+        Jawa Timur
+      </span>
+    </a>
+
+    <a href="https://wa.me/6285707938522"
+       target="_blank"
+       class="footer-item">
+      <i class="fa-solid fa-phone"></i>
+      <span>0857-0793-8522</span>
+    </a>
+
+    <a href="mailto:tokoarunaatk@gmail.com"
+       class="footer-item">
+      <i class="fa-solid fa-envelope"></i>
+      <span>tokoarunaatk@gmail.com</span>
+    </a>
+
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
 </body>
 </html>
